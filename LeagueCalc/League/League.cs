@@ -1,26 +1,7 @@
-using System;
-using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 
 namespace LeagueCalc;
-
-public class Team
-{
-    public string Name { get; }
-    public int Points { get; set; }
-    public int Rank { get; set; }
-
-    public Team(string name)
-    {
-        Name = name;
-    }
-
-    public void AddPoints(int points)
-    {
-        Points += points;
-    }
-}
 
 public class League
 {
@@ -40,11 +21,6 @@ public class League
         }
 
         UpdateRanks();
-    }
-
-    public IEnumerable<Team> GetRankings()
-    {
-        return teams.Values.OrderByDescending(t => t.Points).ThenBy(t => t.Name);
     }
 
     private (string name, int goals) ExtractTeamInfo(string input)
@@ -68,6 +44,11 @@ public class League
             team.AddPoints(3);
         else if (scoredGoals == receivedGoals)
             team.AddPoints(1);
+    }
+
+    public IEnumerable<Team> GetRankings()
+    {
+        return teams.Values.OrderByDescending(t => t.Points).ThenBy(t => t.Name);
     }
 
     private void UpdateRanks()
@@ -94,34 +75,5 @@ public class League
         {
             Console.WriteLine($"{team.Rank}. {team.Name}, {team.Points} pt{(team.Points != 1 ? "s" : "")}");
         }
-    }
-}
-
-class Program
-{
-    static void Main(string[] args)
-    {
-        var league = new League();
-
-        if (args.Length > 0)
-        {
-            var lines = File.ReadAllLines(args[0]);
-            league.ParseInput(lines);
-        }
-        else
-        {
-            Console.WriteLine("No input file provided. Paste results manually (press ENTER when done):");
-
-            var lines = new List<string>();
-
-            string? line;
-            while (!string.IsNullOrEmpty(line = Console.ReadLine()))
-            {
-                lines.Add(line);
-            }
-            league.ParseInput(lines.ToArray());
-        }
-
-        league.PrintRankings();
     }
 }

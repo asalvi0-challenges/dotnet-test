@@ -39,19 +39,19 @@ Once the program is compiled, you can run it with the following steps:
 1. Navigate to the directory containing the compiled executable or the project root directory.
 2. Run the following command to execute the program, replacing `<input_file_path>` with the path to your input file:
    ```bash
-    dotnet run <input_file_path>
+    dotnet run --project LeagueCalc <input_file_path>
    ```
 
 For example:
 
 ```bash
-dotnet run ./input/input.txt
+dotnet run --project LeagueCalc ./input/input.txt
 ```
 
 You can also run the program without the input file argument. In this case, the program will ask for the input data in the terminal, you can paste or write each line manually; make sure to leave an empty line and the end and press `ENTER` to process the data. To do so, run the following command:
 
 ```bash
-dotnet run
+dotnet run --project LeagueCalc
 ```
 
 ## Builing & Running in Docker

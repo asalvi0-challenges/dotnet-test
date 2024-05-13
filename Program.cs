@@ -3,6 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 
+namespace LeagueCalc;
+
 public class Team
 {
     public string Name { get; }
@@ -24,9 +26,9 @@ public class League
 {
     private Dictionary<string, Team> teams = new Dictionary<string, Team>(StringComparer.OrdinalIgnoreCase); // Ignore case for team names
 
-    public void ParseInput(string filePath)
+    public void ParseInput(IEnumerable<string> input)
     {
-        foreach (var line in File.ReadLines(filePath))
+        foreach (var line in input)
         {
             var parts = line.Split(',');
 
@@ -38,6 +40,11 @@ public class League
         }
 
         UpdateRanks();
+    }
+
+    public IEnumerable<Team> GetRankings()
+    {
+        return teams.Values.OrderByDescending(t => t.Points).ThenBy(t => t.Name);
     }
 
     private (string name, int goals) ExtractTeamInfo(string input)
@@ -94,14 +101,27 @@ class Program
 {
     static void Main(string[] args)
     {
-        if (args.Length == 0)
+        var league = new League();
+
+        if (args.Length > 0)
         {
-            Console.WriteLine("Please provide the path to the input file.");
-            return;
+            var lines = File.ReadAllLines(args[0]);
+            league.ParseInput(lines);
+        }
+        else
+        {
+            Console.WriteLine("No input file provided. Paste results manually (press ENTER when done):");
+
+            var lines = new List<string>();
+
+            string? line;
+            while (!string.IsNullOrEmpty(line = Console.ReadLine()))
+            {
+                lines.Add(line);
+            }
+            league.ParseInput(lines.ToArray());
         }
 
-        var league = new League();
-        league.ParseInput(args[0]);
         league.PrintRankings();
     }
 }

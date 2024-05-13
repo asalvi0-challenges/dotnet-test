@@ -48,6 +48,12 @@ For example:
 dotnet run ./input/input.txt
 ```
 
+You can also run the program without the input file argument. In this case, the program will ask for the input data in the terminal, you can paste or write each line manually; make sure to leave an empty line and the end and press `ENTER` to process the data. To do so, run the following command:
+
+```bash
+dotnet run
+```
+
 ## Builing & Running in Docker
 
 You can also run the application inside a Docker container. To do so, follow these steps:
@@ -58,3 +64,11 @@ You can also run the application inside a Docker container. To do so, follow the
    ```bash
    docker build -t dotnet-test . && docker run -d --name dotnet-test dotnet-test:latest
    ```
+
+## Testing
+
+Run your tests with the following command:
+
+```bash
+dotnet test
+```
